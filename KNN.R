@@ -33,9 +33,6 @@ for (j in 1:10)
   test = na.omit(test)
   l = 1
   ac_ctr = 0
-  # i corresponds to each trainig data partition 
-  for(i in 1:9)
-  {  
       for(p in 1:nrow(test))
       {
         #p corresponds to each row
@@ -87,13 +84,12 @@ for (j in 1:10)
         cat("\n--\n")
         #print(training)
       }
-  }
   ac_ctr = calc_accuracy(nrow(test),ac_ctr)
   cat("\n---\n")
   cat("\nNo of rows : ")
   cat(nrow(test),"\n")
   cat("\nAccuracy for Test partition ",j,":")
-  cat(ac_ctr,"n")
+  cat(ac_ctr,"\n")
   ac_ctr = 0
 }
 sink()
