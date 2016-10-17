@@ -1,13 +1,3 @@
-match_acuracy = function(testrow,pred_class,acc_ctr)
-{
-  lenc = ncol(testrow)
-  if(testrow[lenc]==pred_class)
-  {
-    acc_ctr = acc_ctr + 1
-  }
-  return(acc_ctr)
-}
-
 calc_accuracy = function(rows,ac_ctr)
 {
   return((ac_ctr/rows) * 100)
@@ -48,7 +38,8 @@ for (j in 1:10)
             }
             else
             {
-              distance = euclidian(as.numeric(test[p,1:(len-1)]),as.numeric(training[l,1:(len-1)]))
+              #distance = euclidian(as.numeric(test[p,1:(len-1)]),as.numeric(training[l,1:(len-1)]))
+              distance = dist(rbind(as.numeric(test[p,1:(len-1)]),as.numeric(training[l,1:(len-1)])))
               training[l,len+1] =distance 
               l = l + 1
             }
@@ -56,7 +47,7 @@ for (j in 1:10)
         #prepare data set for the prediction of class
         d <- as.data.frame(training,stringsAsFactors = FALSE)
         d[,len+1]<-as.numeric(d[,len+1])
-        d = d[order(d[,9]),]
+        d = d[order(d[,len+1]),]
         cat("Neighbors of row ")
         cat(p," :\n ")
         neighbors = d[1:k,]
@@ -68,6 +59,8 @@ for (j in 1:10)
         #print("--")
         #cat("Row : ",test[p,])
         #print("-")
+        predictedclasses<- rbind(predictedclasses,cls)
+        actualclasses <- rbind(actualclasses,test[p,len])
         if(as.character(test[p,len])==cls)
         {
           cat("True..Increasing accuracy counter:")
@@ -90,6 +83,7 @@ for (j in 1:10)
   cat(nrow(test),"\n")
   cat("\nAccuracy for Test partition ",j,":")
   cat(ac_ctr,"\n")
+  cat("\n")
   ac_ctr = 0
 }
 sink()
